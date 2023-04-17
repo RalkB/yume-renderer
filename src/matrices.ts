@@ -1,5 +1,6 @@
 'use strict';
 
+import { config } from "./config.js";
 import { Vertex } from "./forms.js";
 
 export function multiplyMatrixVector (
@@ -18,14 +19,10 @@ export function multiplyMatrixVector (
     return result;
 };
 
-export function scaleAndNormalizeVertices (
-    vertices: Vertex[],
-    width: number,
-    height: number
-): Vertex[] {
+export function scaleAndNormalizeVertices (vertices: Vertex[]): Vertex[] {
     return vertices.map(({ x, y, z }) => ({
-        x: ((x + 1) * 0.5) * width,
-        y: ((-y + 1) * 0.5) * height,
+        x: ((x + 1) * 0.5) * config.canvas.width,
+        y: ((-y + 1) * 0.5) * config.canvas.height,
         z: z
     }));
 };
@@ -47,20 +44,16 @@ export function transformVertices(
     });
 }
 
-export function perspectiveProjectionMatrix (
-    fovDegrees: number,
-    aspectRatio: number,
-    near: number,
-    far: number
-): number[][] {
-    const fovRadians = fovDegrees * (Math.PI / 180);
+export function perspectiveProjectionMatrix (): number[][] {
+    const fovRadians = config.fovDegrees * (Math.PI / 180);
     const f = 1 / Math.tan(fovRadians / 2);
-    const rangeInv = 1 / (near - far);
+    const rangeInv = 1 / (config.near - config.far);
+    const aspectRatio = config.canvas.width / config.canvas.height;
 
     return [
         [f / aspectRatio, 0, 0, 0],
         [0, f, 0, 0],
-        [0, 0, (near + far) * rangeInv, near * far * rangeInv * 2],
+        [0, 0, (config.near + config.far) * rangeInv, config.near * config.far * rangeInv * 2],
         [0, 0, -1, 0]
     ];
 };

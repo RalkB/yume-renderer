@@ -1,5 +1,6 @@
 'use strict';
 
+import { config } from "./config.js";
 import { Triangle, Vertex } from "./forms.js";
 import {
   perspectiveProjectionMatrix,
@@ -9,8 +10,8 @@ import {
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.createElement("canvas");
-    canvas.width = 800;
-    canvas.height = 600;
+    canvas.width = config.canvas.width;
+    canvas.height = config.canvas.height;
     document.body.appendChild(canvas);
   
     const ctx = canvas.getContext("2d");
@@ -39,14 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
         { v1: 1, v2: 2, v3: 6 }, { v1: 1, v2: 6, v3: 5 }  // Face direita
     ];
 
-    const fovDegrees = 90;
-    const near = 0.1;
-    const far = 100;
-    const aspectRatio = canvas.width / canvas.height;
-
-    const projectionMatrix = perspectiveProjectionMatrix(fovDegrees, aspectRatio, near, far);
+    const projectionMatrix = perspectiveProjectionMatrix();
     const transformedVertices = transformVertices(vertices, projectionMatrix);
-    const scaledVertices = scaleAndNormalizeVertices(transformedVertices, canvas.width, canvas.height);
+    const scaledVertices = scaleAndNormalizeVertices(transformedVertices);
 
     const drawWireframe = (ctx: CanvasRenderingContext2D, vertices: Vertex[], triangles: Triangle[]) => {
         ctx.fillStyle = "#000000";
