@@ -1,0 +1,32 @@
+{
+  "name": "yume-renderer",
+  "description": "A typescript canvas 3D Renderer (Study Project)",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./server.js",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RalkB/yume-renderer.git"
+  },
+  "keywords": [
+    "3d",
+    "renderer"
+  ],
+  "author": "RalkB, Guilherme Cordeiro de Almeida",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RalkB/yume-renderer/issues"
+  },
+  "homepage": "https://github.com/RalkB/yume-renderer#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
