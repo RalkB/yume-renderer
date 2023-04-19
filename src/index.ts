@@ -3,10 +3,11 @@
 import { config } from "./config.js";
 import { Triangle, Vertex } from "./forms.js";
 import {
-  perspectiveProjectionMatrix,
-  scaleAndNormalizeVertices,
-  transformVertices,
+    multiplyMatrixVector,
+    perspectiveProjectionMatrix, rotationMatrixX,
 } from "./matrices.js";
+import { drawWireframe } from "./render.js";
+import { scaleAndNormalizeVertices, transformVertices } from "./transform.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.createElement("canvas");
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const vertices: Vertex[] = [
+    let vertices: Vertex[] = [
         { x: 0, y: 0, z: 0 },
         { x: 1, y: 0, z: 0 },
         { x: 1, y: 1, z: 0 },
@@ -40,30 +41,35 @@ document.addEventListener("DOMContentLoaded", () => {
         { v1: 1, v2: 2, v3: 6 }, { v1: 1, v2: 6, v3: 5 }  // Face direita
     ];
 
-    const projectionMatrix = perspectiveProjectionMatrix();
-    const transformedVertices = transformVertices(vertices, projectionMatrix);
-    const scaledVertices = scaleAndNormalizeVertices(transformedVertices);
 
-    const drawWireframe = (ctx: CanvasRenderingContext2D, vertices: Vertex[], triangles: Triangle[]) => {
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    let lastTime = performance.now();
 
-        ctx.strokeStyle = "#ffffff";
-      
-        // Desenha as linhas de contorno
-        for (const { v1, v2, v3 } of triangles) {
-            const p1 = vertices[v1];
-            const p2 = vertices[v2];
-            const p3 = vertices[v3];
+    function animate(ctx: CanvasRenderingContext2D) {
+        const currentTime = performance.now();
+        const deltaTime = (currentTime - lastTime) / 1000; // Calculate time elapsed in seconds
+        lastTime = currentTime;
     
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.lineTo(p3.x, p3.y);
-            ctx.closePath();
-            ctx.stroke();
-        }
-    };
+        const angle = 5 * deltaTime;
+        const rotationX = rotationMatrixX(angle);
+        vertices = vertices.map((vertex) => {
+            const [x, y, z, w] = multiplyMatrixVector(rotationX, [
+                vertex.x,
+                vertex.y,
+                vertex.z,
+                1,
+            ]);
+            return {x, y, z};
+        })
+        // console.log(rotationX);
+        // Transform and project the rotated vertices
+        const transformedVertices = transformVertices(vertices, perspectiveProjectionMatrix());
+        const scaledVertices = scaleAndNormalizeVertices(transformedVertices);
+    
+        // Draw the rotated cube
+        drawWireframe(ctx, scaledVertices, triangles);
+    
+        requestAnimationFrame(() => animate(ctx));
+    }
 
-    drawWireframe(ctx, scaledVertices, triangles);
+    animate(ctx);
 });
