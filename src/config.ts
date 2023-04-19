@@ -5,7 +5,7 @@ export const config = {
       width: 800,
       height: 600
     },
-    fovDegrees: 90,
+    fovDegrees: 40,
     near: 0.1,
     far: 100,
 };
