@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const deltaTime = (currentTime - lastTime) / 1000; // Calculate time elapsed in seconds
         lastTime = currentTime;
     
-        const angle = 5 * deltaTime;
+        const angle = 1 * deltaTime;
         const rotationX = rotationMatrixX(angle);
         vertices = vertices.map((vertex) => {
             const [x, y, z, w] = multiplyMatrixVector(rotationX, [
