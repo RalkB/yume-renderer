@@ -16,7 +16,6 @@ export function drawWireframe (ctx: CanvasRenderingContext2D, vertices: Vertex[]
 
     ctx.strokeStyle = "#ffffff";
   
-    // Desenha as linhas de contorno
     for (const { v1, v2, v3 } of triangles) {
         const p1 = vertices[v1];
         const p2 = vertices[v2];
