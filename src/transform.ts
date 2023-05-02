@@ -31,7 +31,7 @@ export function transformVertices(
         const [x, y, z, w] = multiplyMatrixVector(matrix, [
             vertex.x,
             vertex.y,
-            vertex.z + 5,
+            vertex.z,
             1,
         ]);
 

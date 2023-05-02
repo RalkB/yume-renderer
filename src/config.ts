@@ -2,10 +2,10 @@
 
 export const config = {
     canvas: {
-      width: 800,
-      height: 600
+      width: 1200,
+      height: 720
     },
     fovDegrees: 90,
     near: 0.1,
-    far: 100,
+    far: 1000,
 };

@@ -8,7 +8,7 @@ The following tasks and features are planned for future development:
 - [ ] Fix object rendering issues when it is close to the camera, resulting in unpredictable line patterns.
 
 ### Rendering Techniques
-- [ ] Implement back-face culling to improve rendering performance by only drawing visible faces.
+- [x] Implement back-face culling to improve rendering performance by only drawing visible faces.
 - [ ] Add lighting support to enhance the visual appearance of objects with different light sources and shading.
 
 ### File Format Support

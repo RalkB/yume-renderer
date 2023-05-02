@@ -20,23 +20,20 @@ export function multiplyMatrixVector (
     ];
 };
 
-/**
- * Generates a perspective projection matrix based on the configuration.
- * @returns A 4x4 perspective projection matrix.
- */
-export function perspectiveProjectionMatrix (): number[][] {
-    const fovRadians = config.fovDegrees * (Math.PI / 180);
-    const f = 1 / Math.tan(fovRadians / 2);
-    const rangeInv = 1 / (config.near - config.far);
+export function perspectiveProjectionMatrix(): number[][] {
     const aspectRatio = config.canvas.width / config.canvas.height;
+    const fovRad = (config.fovDegrees / 2) * (Math.PI / 180);
+    const fovScale = 1 / Math.tan(fovRad);
+    const zFar = config.far;
+    const zNear = config.near;
 
     return [
-        [f / aspectRatio, 0, 0, 0],
-        [0, f, 0, 0],
-        [0, 0, (config.near + config.far) * rangeInv, config.near * config.far * rangeInv * 2],
-        [0, 0, -1, 0]
+        [fovScale / aspectRatio, 0, 0, 0],
+        [0, fovScale, 0, 0],
+        [0, 0, zFar / (zFar - zNear), 1],
+        [0, 0, -(zFar * zNear) / (zFar - zNear), 0],
     ];
-};
+}
 
 /**
  * Generates a 4d rotation matrix in the x axis 
@@ -51,3 +48,24 @@ export function rotationMatrixX(rotationAngle: number) : number[][]{
         [0, 0, 0, 1]
     ]
 }
+
+/**
+ * Generates a 4d rotation matrix in the y axis 
+ * @param rotationAngle the angle that the object will rotate
+ * @returns 
+ */
+export function rotationMatrixY(rotationAngle: number) : number[][]{
+    return [
+        [Math.cos(rotationAngle), 0, -Math.sin(rotationAngle), 0],
+        [0, 1, 0, 0],
+        [Math.sin(rotationAngle), 0, Math.cos(rotationAngle), 0],
+        [0, 0, 0, 1]
+    ];
+}
+
+export const translationMatrix = [
+    [1, 0, 0, 0],
+    [0, 1, 0, -0.3],
+    [0, 0, 1, 15], // Aumente a distância do cubo em relação à câmera
+    [0, 0, 0, 1],
+];
